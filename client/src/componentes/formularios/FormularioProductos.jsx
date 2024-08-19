@@ -4,7 +4,7 @@ import { addProducto, updateProducto } from "../../funciones/FuncionesProductos"
 const FormularioProductos = ({
     nombreProducto, setNombreProducto, marca, setMarca, modelo, setModelo, tipo, setTipo,
     precio, setPrecio, garantia, setGarantia, descripcion, setDescripcion,
-    stock, setStock, editar, addProducto, updateProducto, clearForm
+    stock, setStock, editar, addProducto, updateProducto, clearProductoForm
 }) => {
     return (
         <form>
@@ -85,7 +85,7 @@ const FormularioProductos = ({
                     editar ?
                         <div>
                             <button type="button" className="btn btn-warning m-2" onClick={updateProducto}>Actualizar</button>
-                            <button type="button" className="btn btn-info m-2" onClick={clearForm}>Cancelar</button>
+                            <button type="button" className="btn btn-info m-2" onClick={clearProductoForm}>Cancelar</button>
                         </div>
                         : <button type="button" className="btn btn-success" onClick={addProducto}>Agregar</button>
                 }

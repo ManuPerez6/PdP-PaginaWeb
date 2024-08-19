@@ -1,7 +1,7 @@
 import Axios from "axios";
 import Swal from "sweetalert2";
 
-export const addProducto = ({ idProducto, nombreProducto, marca, modelo, tipo, precio, garantia, descripcion, stock }, getProductos, clearForm) => {
+export const addProducto = ({ idProducto, nombreProducto, marca, modelo, tipo, precio, garantia, descripcion, stock }, getProductos, clearProductoForm) => {
     Axios.post("http://localhost:3006/Productos/create", {
         idProducto, nombreProducto, marca, modelo, tipo, precio, garantia, descripcion, stock,
     }).then(() => {
@@ -11,7 +11,7 @@ export const addProducto = ({ idProducto, nombreProducto, marca, modelo, tipo, p
             html: `<i>El producto <strong>${nombreProducto}</strong> fue registrado en el catálogo</i>`,
             icon: 'success'
         });
-        clearForm();
+        clearProductoForm();
     }).catch(error => {
         console.error("Error al registrar el producto:", error.response ? error.response.data : error.message);
         Swal.fire({
@@ -22,7 +22,7 @@ export const addProducto = ({ idProducto, nombreProducto, marca, modelo, tipo, p
     });
 };
 
-export const updateProducto = ({ idProducto, nombreProducto, marca, modelo, tipo, precio, garantia, descripcion, stock }, getProductos, setEditar, clearForm) => {
+export const updateProducto = ({ idProducto, nombreProducto, marca, modelo, tipo, precio, garantia, descripcion, stock }, getProductos, setEditar, clearProductoForm) => {
     Axios.put("http://localhost:3006/Productos/update", {
         idProducto, nombreProducto, marca, modelo, tipo, precio, garantia, descripcion, stock,
     }).then(() => {
@@ -33,7 +33,7 @@ export const updateProducto = ({ idProducto, nombreProducto, marca, modelo, tipo
             icon: 'success'
         });
         setEditar(false);
-        clearForm();
+        clearProductoForm();
     }).catch(error => {
         console.error("Error al actualizar el producto:", error.response ? error.response.data : error.message);
         Swal.fire({
@@ -120,7 +120,7 @@ export const checkBajoStock = (updateProducto) => {
     });
 };
 
-export const clearForm = (setNombre, setMarca, setModelo, setTipo, setPrecio, setGarantia, setDescripcion, setStock, setEditar) => {
+export const clearProductoForm = (setNombre, setMarca, setModelo, setTipo, setPrecio, setGarantia, setDescripcion, setStock, setEditar) => {
     setNombre("");
     setMarca("");
     setModelo("");

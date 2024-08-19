@@ -247,7 +247,7 @@ const App = () => {
                 editar={editarProducto}
                 addProducto={addProduct}
                 updateProducto={updateProduct}
-                clearForm={clearProductoForm}
+                clearProductoForm={clearProductoForm}
               />
               <TablaProductos
                 productosList={productosList}
