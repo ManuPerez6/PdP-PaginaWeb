@@ -9,6 +9,8 @@ import FormularioProductos from "./componentes/formularios/FormularioProductos";
 import TablaProductos from "./componentes/tablas/TablaProductos";
 import FormularioProveedores from "./componentes/formularios/FormularioProveedores";
 import TablaProveedores from "./componentes/tablas/TablaProveedores";
+import FormularioVentas from "./componentes/formularios/FormularioVentas";
+import TablaVentas from "./componentes/tablas/TablaVentas";
 import {
   getEmpleados, addEmpleado, updateEmpleado, deleteEmpleado
 } from "./funciones/FuncionesEmpleados";
@@ -18,7 +20,10 @@ import {
 import {
   getProveedores, addProveedor, updateProveedor, deleteProveedor
 } from "./funciones/FuncionesProveedores";
-import { startCheckingStock } from "./reportes/InformeBajoStock"
+import {
+  getVentas, addVenta, updateVenta, deleteVenta
+} from "./funciones/FuncionesVentas";
+import { startCheckingStock } from "./reportes/InformeBajoStock";
 
 const App = () => {
   // Estado para empleados
@@ -65,10 +70,25 @@ const App = () => {
   const [proveedoresList, setProveedoresList] = useState([]);
   const [editarProveedor, setEditarProveedor] = useState(false);
 
+  // Estados para ventas
+  const [idVenta, setIdVenta] = useState();
+  const [idEmpleadoVenta, setIdEmpleadoVenta] = useState();
+  const [factura, setFactura] = useState("");
+  const [fechaVenta, setFechaVenta] = useState("");
+  const [precioIndividual, setPrecioIndividual] = useState();
+  const [totalVenta, setTotalVenta] = useState();
+  const [idProductoVenta, setIdProductoVenta] = useState();
+  const [cantidad, setCantidad] = useState();
+  const [metodoPago, setMetodoPago] = useState("");
+  const [estadoVenta, setEstadoVenta] = useState("");
+  const [ventasList, setVentasList] = useState([]);
+  const [editarVenta, setEditarVenta] = useState(false);
+
   useEffect(() => {
     getEmpleados(setEmpleadosList);
     getProductos(setProductosList);
     getProveedores(setProveedoresList);
+    getVentas(setVentasList);
     // Inicia la comprobación de bajo stock
     const stopCheckingStock = startCheckingStock(updateProducto);
 
@@ -191,6 +211,43 @@ const App = () => {
     updateProveedor({ idProveedores, nombreProveedor, contactoPrincipal, telefono, email, direccion, ciudad, pais, codigoPostal, tipoProveedor, condicionesPago, descuentos, plazoEntrega, categoriaProductos, estado, notas }, clearProveedorForm, () => getProveedores(setProveedoresList));
   };
 
+  // Funciones para ventas
+  const clearVentaForm = () => {
+    setIdEmpleadoVenta("");
+    setFactura("");
+    setFechaVenta("");
+    setPrecioIndividual("");
+    setTotalVenta("");
+    setIdProductoVenta("");
+    setCantidad("");
+    setMetodoPago("");
+    setEstadoVenta("");
+    setEditarVenta(false);
+    setIdVenta("");
+  };
+
+  const addVentaFn = () => {
+    addVenta({ idEmpleado: idEmpleadoVenta, factura, fechaVenta, precioIndividual, totalVenta, idProducto: idProductoVenta, cantidad, metodoPago, estado: estadoVenta }, clearVentaForm, () => getVentas(setVentasList));
+  };
+
+  const editarVentaFn = (val) => {
+    setEditarVenta(true);
+    setIdVenta(val.idVenta);
+    setIdEmpleadoVenta(val.idEmpleado);
+    setFactura(val.factura);
+    setFechaVenta(val.fechaVenta);
+    setPrecioIndividual(val.precioIndividual);
+    setTotalVenta(val.totalVenta);
+    setIdProductoVenta(val.idProducto);
+    setCantidad(val.cantidad);
+    setMetodoPago(val.metodoPago);
+    setEstadoVenta(val.estado);
+  };
+
+  const updateVentaFn = () => {
+    updateVenta({ idVenta, idEmpleado: idEmpleadoVenta, factura, fechaVenta, precioIndividual, totalVenta, idProducto: idProductoVenta, cantidad, metodoPago, estado: estadoVenta }, clearVentaForm, () => getVentas(setVentasList));
+  };
+
   return (
     <Router>
       <NavBar />
@@ -301,6 +358,44 @@ const App = () => {
                 proveedoresList={proveedoresList}
                 editarProveedor={editarProveedorFn}
                 deleteProveedor={(valProveedor) => deleteProveedor(valProveedor, () => getProveedores(setProveedoresList))}
+              />
+            </>
+          } />
+          <Route path="/ventas" element={
+            <>
+              <h2 className="mb-4">Gestión de Ventas</h2>
+              <FormularioVentas
+                idVenta={idVenta}
+                setIdVenta={setIdVenta}
+                idEmpleadoVenta={idEmpleadoVenta}
+                setIdEmpleadoVenta={setIdEmpleadoVenta}
+                factura={factura}
+                setFactura={setFactura}
+                fechaVenta={fechaVenta}
+                setFechaVenta={setFechaVenta}
+                precioIndividual={precioIndividual}
+                setPrecioIndividual={setPrecioIndividual}
+                totalVenta={totalVenta}
+                setTotalVenta={setTotalVenta}
+                idProductoVenta={idProductoVenta}
+                setIdProductoVenta={setIdProductoVenta}
+                cantidad={cantidad}
+                setCantidad={setCantidad}
+                metodoPago={metodoPago}
+                setMetodoPago={setMetodoPago}
+                estado={estadoVenta}
+                setEstado={setEstadoVenta}
+                editar={editarVenta}
+                addVenta={addVentaFn}
+                updateVenta={updateVentaFn}
+                clearForm={clearVentaForm}
+                getVentas={getVentas}
+                setVentasList={setVentasList}
+              />
+              <TablaVentas
+                ventasList={ventasList}
+                editarVenta={editarVentaFn}
+                deleteVenta={(val) => deleteVenta(val, () => getVentas(setVentasList))}
               />
             </>
           } />

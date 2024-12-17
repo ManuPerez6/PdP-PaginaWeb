@@ -233,6 +233,74 @@ app.get("/Proveedores", (req, res) => {
     });
 });
 
+app.post("/Ventas/create", (req, res) => {
+    const { idEmpleado, idProducto, factura, fechaVenta, precioIndividual, totalVenta, cantidad, metodoPago, estado } = req.body;
+
+    db.query(
+        "INSERT INTO Ventas (idEmpleado, idProducto, factura, fechaVenta, precioIndividual, totalVenta, cantidad, metodoPago, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [idEmpleado, idProducto, factura, fechaVenta, precioIndividual, totalVenta, cantidad, metodoPago, estado],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Error al registrar la venta");
+            }
+            res.send("Venta registrada con éxito!!");
+        }
+    );
+});
+
+app.put("/Ventas/update", (req, res) => {
+    const { idVenta, idEmpleado, idProducto, factura, fechaVenta, precioIndividual, totalVenta, cantidad, metodoPago, estado } = req.body;
+
+    db.query(
+        "UPDATE Ventas SET idEmpleado = ?, idProducto = ?, factura = ?, fechaVenta = ?, precioIndividual = ?, totalVenta = ?, cantidad = ?, metodoPago = ?, estado = ? WHERE idVenta = ?",
+        [idEmpleado, idProducto, factura, fechaVenta, precioIndividual, totalVenta, cantidad, metodoPago, estado, idVenta],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Error al actualizar la venta");
+            }
+            res.send("Venta actualizada con éxito!!");
+        }
+    );
+});
+
+app.delete("/Ventas/delete/:idVenta", (req, res) => {
+    const idVenta = req.params.idVenta;
+
+    if (!idVenta) {
+        return res.status(400).send("ID de venta no proporcionado");
+    }
+
+    db.query(
+        "DELETE FROM Ventas WHERE idVenta = ?",
+        [idVenta],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Error al eliminar la venta");
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).send("Venta no encontrada");
+            }
+
+            res.send("Venta eliminada con éxito");
+        }
+    );
+});
+
+app.get("/Ventas", (req, res) => {
+    db.query("SELECT * FROM Ventas", (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Error al obtener ventas");
+        }
+        res.send(result);
+    });
+});
+
+
 // Iniciar el servidor
 app.listen(3006, () => {
     console.log("Servidor corriendo en el puerto 3006");

@@ -1,4 +1,3 @@
-// NavBar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,9 +21,11 @@ const NavBar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/productos">Productos</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/ventas">Ventas</Link>
+                        </li>
                     </ul>
                 </div>
-
             </div>
         </nav>
     );
