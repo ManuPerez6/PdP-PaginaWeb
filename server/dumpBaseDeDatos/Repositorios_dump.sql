@@ -1,9 +1,9 @@
-/*!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.4.2-MariaDB, for Linux (x86_64)
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19-11.6.2-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: Repositorios
 -- ------------------------------------------------------
--- Server version	11.4.2-MariaDB
+-- Server version	11.6.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +32,7 @@ CREATE TABLE `Empleados` (
   `sede` varchar(255) DEFAULT NULL,
   `años` int(11) DEFAULT NULL,
   PRIMARY KEY (`idEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `Empleados` (
 LOCK TABLES `Empleados` WRITE;
 /*!40000 ALTER TABLE `Empleados` DISABLE KEYS */;
 INSERT INTO `Empleados` VALUES
-(10,'Manuel Perez',20,'Firmat','Vendedor','Centro',2);
+(12,'Manuel Pérez',20,'Firmat','Vendedor','Centro',9);
 /*!40000 ALTER TABLE `Empleados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +74,7 @@ CREATE TABLE `Productos` (
 LOCK TABLES `Productos` WRITE;
 /*!40000 ALTER TABLE `Productos` DISABLE KEYS */;
 INSERT INTO `Productos` VALUES
-(12,'Lampara','Genérica','HD9835','Lampara de Escritorio',40000.00,2,'Lampara de Escritorio Roja',30);
+(12,'Lampara','Genérica','HD9835','Lampara de Escritorio',40000.00,2,'Lampara de Escritorio Roja',29);
 /*!40000 ALTER TABLE `Productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,8 +114,46 @@ LOCK TABLES `Proveedores` WRITE;
 /*!40000 ALTER TABLE `Proveedores` DISABLE KEYS */;
 INSERT INTO `Proveedores` VALUES
 (5,'Juan Pérez','Whatsapp','3462420954','juanperez@example.com','O\'higgins 426','Venado Tuerto','Argentina','2600','Mayorista','Débito',2.00,'10','Lamparas','Activo','Proveedor de lamparas'),
-(6,'Alberto Ortega','Whatsapp','3462432144','ortega@example.com','Paraná 1454','Venado Tuerto','Argentina','2600','Distribuidor','Crédito',4.00,'6','Televisores','Activo','Proveedor de televisores');
+(6,'Alberto Ortega','Whatsapp','3462432144','ortega@example.com','Paraná 1454','Venado Tuerto','Argentina','2600','Distribuidor','Crédito',4.00,'7','Televisores','Activo','Proveedor de decorativos');
 /*!40000 ALTER TABLE `Proveedores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Ventas`
+--
+
+DROP TABLE IF EXISTS `Ventas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Ventas` (
+  `idVenta` int(11) NOT NULL AUTO_INCREMENT,
+  `idEmpleado` int(11) NOT NULL,
+  `idProducto` int(11) NOT NULL,
+  `factura` varchar(50) NOT NULL,
+  `fechaVenta` date NOT NULL,
+  `precioIndividual` decimal(10,2) NOT NULL,
+  `totalVenta` decimal(10,2) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `metodoPago` varchar(45) NOT NULL,
+  `estado` varchar(20) NOT NULL,
+  PRIMARY KEY (`idVenta`),
+  KEY `fk_idEmpleados` (`idEmpleado`),
+  KEY `fk_idProductos_idx` (`idProducto`),
+  CONSTRAINT `fk_idEmpleados` FOREIGN KEY (`idEmpleado`) REFERENCES `Empleados` (`idEmpleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_idProducto` FOREIGN KEY (`idProducto`) REFERENCES `Productos` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Ventas`
+--
+
+LOCK TABLES `Ventas` WRITE;
+/*!40000 ALTER TABLE `Ventas` DISABLE KEYS */;
+INSERT INTO `Ventas` VALUES
+(2,12,12,'\"C\" Consumidor Final N°. 14060','2024-03-12',5999.00,5999.00,1,'Efectivo','Pagado'),
+(6,12,12,'\"B\" R.R.I.I. N°. 29560','2023-04-12',7999.00,7999.00,1,'Efectivo','Pendiente');
+/*!40000 ALTER TABLE `Ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -127,4 +165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2024-08-19  1:23:21
+-- Dump completed on 2024-12-17 20:04:05
